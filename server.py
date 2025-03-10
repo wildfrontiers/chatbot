@@ -23,22 +23,24 @@ def home():
     return "Patreon Chatbot API is running!"
 
 def fetch_relevant_link(query):
-    """Search Patreon Help Center for relevant links."""
-    search_url = f"{PATREON_HELP_CENTER_URL}/search.json?query={query}"
-    
-    try:
-        response = requests.get(search_url)
-        response.raise_for_status()
-        results = response.json().get("results", [])
-        
-        if results:
-            first_result = results[0]  # Get the most relevant result
-            return f"For more details, visit: {PATREON_HELP_CENTER_URL}{first_result['url']}"
-    
-    except requests.RequestException as e:
-        print(f"Error fetching Help Center link: {e}")
-    
-    return ""
+    """Manually map common Patreon questions to Help Center articles."""
+    help_links = {
+        "create post": "https://support.patreon.com/hc/en-us/articles/360041477731",
+        "delete post": "https://support.patreon.com/hc/en-us/articles/360041477731",
+        "refund": "https://support.patreon.com/hc/en-us/articles/360024052451",
+        "change tier": "https://support.patreon.com/hc/en-us/articles/360042220291",
+        "payment issues": "https://support.patreon.com/hc/en-us/articles/360016186491",
+        "taxes": "https://support.patreon.com/hc/en-us/articles/360016188491",
+        "billing date": "https://support.patreon.com/hc/en-us/articles/203913799",
+        "patron-only content": "https://support.patreon.com/hc/en-us/articles/360000126286",
+    }
+
+    # Find a relevant help center link based on keywords in the query
+    for keyword, url in help_links.items():
+        if keyword in query.lower():
+            return f"\n\n🔗 For more details, visit: {url}"
+
+    return ""  # No relevant link found
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -69,7 +71,7 @@ def chat():
         # Fetch relevant Patreon Help Center link
         link = fetch_relevant_link(user_message)
         if link:
-            bot_reply += f"\n\n🔗 {link}"
+            bot_reply += f"\n\n{link}"
         
         return jsonify({"reply": bot_reply})
     
