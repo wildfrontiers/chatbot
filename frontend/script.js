@@ -6,7 +6,7 @@ async function sendMessage() {
     chatBox.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
 
     try {
-        const response = await fetch("https://your-render-app.onrender.com/chat", {
+        const response = await fetch("https://help-center-chatbot.onrender.com", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message: userInput })
