@@ -5,40 +5,38 @@ function renderMarkdown(markdownText) {
 }
 
 async function sendMessage() {
-    const userInput = document.getElementById("user-input").value.trim();
-    if (!userInput) return; // Prevent sending empty messages
+    const userInput = document.getElementById("userInput").value.trim();
+    if (!userInput) return;
 
-    const chatBox = document.getElementById("chat-box");
+    const chatbox = document.getElementById("chatbox");
 
-    // Add user message
-    chatBox.innerHTML += `<div class="user-message"><strong>You:</strong> ${userInput}</div>`;
-    document.getElementById("user-input").value = ""; // Clear input box
+    // Display user message
+    chatbox.innerHTML += `<p class="user-message"><strong>You:</strong> ${userInput}</p>`;
+    document.getElementById("userInput").value = ""; // Clear input field
 
-    // Add loading indicator
-    const loadingMessage = document.createElement("div");
+    // Add loading message
+    const loadingMessage = document.createElement("p");
     loadingMessage.classList.add("bot-message");
-    loadingMessage.innerHTML = "<em>Bot is thinking...</em>";
-    chatBox.appendChild(loadingMessage);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    loadingMessage.innerHTML = "<em>Chatbot is thinking...</em>";
+    chatbox.appendChild(loadingMessage);
+    chatbox.scrollTop = chatbox.scrollHeight;
 
     try {
-        const response = await fetch("https://help-center-chatbot.onrender.com/chat", { // Fixed API endpoint
+        const response = await fetch("https://help-center-chatbot.onrender.com/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message: userInput })
         });
 
         const data = await response.json();
-        
-        // Remove loading message
-        chatBox.removeChild(loadingMessage);
+        chatbox.removeChild(loadingMessage); // Remove loading indicator
 
         // Add bot response with Markdown rendering
-        chatBox.innerHTML += `<div class="bot-message"><strong>Bot:</strong> ${renderMarkdown(data.reply)}</div>`;
+        chatbox.innerHTML += `<p class="bot-message"><strong>Chatbot:</strong> ${renderMarkdown(data.reply)}</p>`;
 
     } catch (error) {
-        chatBox.innerHTML += `<div class="bot-message"><strong>Bot:</strong> Error reaching chatbot.</div>`;
+        chatbox.innerHTML += `<p class="bot-message error"><strong>Chatbot:</strong> Error reaching chatbot.</p>`;
     }
 
-    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to latest message
+    chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll to latest message
 }
