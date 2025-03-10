@@ -27,12 +27,12 @@ body {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    background: #fafafa;
+    background: #ffffff;
 }
 
 /* Chat Messages */
 .user-message {
-    background: #0061ff; /* Patreon blue */
+    background: #000; /* Black */
     color: white;
     padding: 10px;
     border-radius: 8px;
@@ -50,6 +50,12 @@ body {
     max-width: 80%;
 }
 
+/* Markdown Formatting */
+.bot-message a {
+    color: #000;
+    text-decoration: underline;
+}
+
 /* Input Box */
 .input-container {
     display: flex;
@@ -65,7 +71,7 @@ body {
 }
 
 .input-container button {
-    background: #ff424d; /* Patreon red */
+    background: #000; /* Black */
     color: white;
     padding: 10px 15px;
     border-radius: 5px;
@@ -76,5 +82,5 @@ body {
 }
 
 .input-container button:hover {
-    background: #d93642;
+    background: #333;
 }
