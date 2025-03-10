@@ -1,3 +1,4 @@
+/* General Page Styling */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -6,74 +7,142 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    padding: 20px;
 }
 
+/* Chat Container */
 .chat-container {
-    width: 400px;
+    width: 100%;
+    max-width: 450px;
     background: white;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
     padding: 20px;
     text-align: center;
 }
 
+/* Chatbot Title */
 h1 {
-    font-size: 24px;
-    color: #333;
+    font-size: 22px;
+    color: #222;
     margin-bottom: 10px;
 }
 
+/* Chatbox Styling */
 #chatbox {
-    height: 300px;
+    height: 350px;
     overflow-y: auto;
     border: 1px solid #ddd;
-    padding: 10px;
+    padding: 15px;
     background: #fafafa;
     text-align: left;
     border-radius: 5px;
+    font-size: 14px;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
+/* Scrollbar Customization */
+#chatbox::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chatbox::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+/* Message Styling */
 p {
     margin: 5px 0;
-    line-height: 1.5;
+    padding: 8px;
+    border-radius: 6px;
+    max-width: 85%;
 }
 
+/* User Message */
 .user-message {
-    color: #007bff;
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 12px 12px 0 12px;
+}
+
+/* Chatbot Message */
+.bot-message {
+    background-color: #f1f1f1;
+    color: #333;
+    align-self: flex-start;
+    padding: 10px;
+    border-radius: 12px 12px 12px 0;
+}
+
+/* Error Message */
+.error {
+    color: red;
     font-weight: bold;
 }
 
-.bot-message {
-    color: #333;
-}
-
-.error {
-    color: red;
-}
-
+/* Input Area */
 .input-container {
-    margin-top: 10px;
+    margin-top: 15px;
     display: flex;
+    gap: 5px;
 }
 
+/* Input Field */
 input {
     flex: 1;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 6px;
     font-size: 14px;
+    outline: none;
 }
 
+/* Input Focus Effect */
+input:focus {
+    border-color: #007bff;
+    box-shadow: 0px 0px 4px rgba(0, 123, 255, 0.4);
+}
+
+/* Send Button */
 button {
     background: #007bff;
     color: white;
     border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
+    padding: 12px 15px;
+    border-radius: 6px;
     cursor: pointer;
-    margin-left: 5px;
+    transition: background 0.3s ease-in-out;
+    font-weight: bold;
 }
 
 button:hover {
     background: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 500px) {
+    .chat-container {
+        width: 90%;
+    }
+
+    #chatbox {
+        height: 300px;
+    }
+
+    input {
+        font-size: 12px;
+        padding: 10px;
+    }
+
+    button {
+        padding: 10px 12px;
+    }
 }
