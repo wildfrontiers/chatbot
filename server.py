@@ -25,14 +25,12 @@ def home():
 def fetch_relevant_link(query):
     """Manually map common Patreon questions to Help Center articles."""
     help_links = {
-        "create post": "https://support.patreon.com/hc/en-us/articles/360041477731",
-        "delete post": "https://support.patreon.com/hc/en-us/articles/360041477731",
-        "refund": "https://support.patreon.com/hc/en-us/articles/360024052451",
-        "change tier": "https://support.patreon.com/hc/en-us/articles/360042220291",
-        "payment issues": "https://support.patreon.com/hc/en-us/articles/360016186491",
-        "taxes": "https://support.patreon.com/hc/en-us/articles/360016188491",
-        "billing date": "https://support.patreon.com/hc/en-us/articles/203913799",
-        "patron-only content": "https://support.patreon.com/hc/en-us/articles/360000126286",
+        "create post": "https://support.patreon.com/hc/en-us/sections/4483630774797-Posting-on-Patreon",
+        "delete post": "https://support.patreon.com/hc/en-us/articles/204606075-Editing-your-published-posts",
+        "refund": "https://support.patreon.com/hc/en-us/articles/360021113811-How-do-I-request-a-refund",
+        "change tier": "https://support.patreon.com/hc/en-us/articles/360000126286-How-to-change-your-tier-a-guide-for-members",
+        "payment issues": "https://support.patreon.com/hc/en-us/sections/28546568689549-Paying-out-your-earnings",
+        "pricing": "https://support.patreon.com/hc/en-us/articles/16733504643597-Pricing-FAQ",
     }
 
     # Find a relevant help center link based on keywords in the query
