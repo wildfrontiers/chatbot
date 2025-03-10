@@ -16,16 +16,25 @@
             let userMessage = document.getElementById("userMessage").value;
             let responseElement = document.getElementById("response");
 
-            let response = await fetch("https://help-center-chatbot.onrender.com/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ message: userMessage })
-            });
+            try {
+                let response = await fetch("https://help-center-chatbot.onrender.com/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message: userMessage })
+                });
 
-            let data = await response.json();
-            responseElement.innerText = "Chatbot: " + data.reply;
+                if (!response.ok) {
+                    throw new Error("Server error: " + response.status);
+                }
+
+                let data = await response.json();
+                responseElement.innerText = "Chatbot: " + data.reply;
+            } catch (error) {
+                responseElement.innerText = "Error reaching chatbot. Please try again.";
+                console.error("Fetch error:", error);
+            }
         }
     </script>
 </body>
