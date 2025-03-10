@@ -4,7 +4,14 @@ async function sendMessage() {
     if (!userMessage) return;
 
     const chatbox = document.getElementById("chatbox");
+    
+    // Display user message
     chatbox.innerHTML += `<p class="user-message">You: ${userMessage}</p>`;
+    
+    // Show "Chatbot is thinking..."
+    chatbox.innerHTML += `<p class="bot-message" id="thinking">Chatbot is thinking...</p>`;
+    
+    chatbox.scrollTop = chatbox.scrollHeight;
     userInput.value = ""; // Clear input field
 
     try {
@@ -15,12 +22,21 @@ async function sendMessage() {
         });
 
         const data = await response.json();
-        chatbox.innerHTML += `<p class="bot-message">Chatbot: ${data.reply}</p>`;
-        chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll to latest message
+
+        // Remove "Chatbot is thinking..."
+        document.getElementById("thinking").remove();
+        
+        // Convert Markdown links to clickable links
+        const formattedReply = data.reply.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+        chatbox.innerHTML += `<p class="bot-message">Chatbot: ${formattedReply}</p>`;
 
     } catch (error) {
+        document.getElementById("thinking").remove();
         chatbox.innerHTML += `<p class="bot-message error">Error: Couldn't reach chatbot.</p>`;
     }
+
+    chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll to latest message
 }
 
 // Allow pressing "Enter" to send messages
