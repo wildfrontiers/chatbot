@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import openai
 from dotenv import load_dotenv
+import requests
 
 # Load API Key from .env file
 load_dotenv()
@@ -13,11 +14,31 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend access
 
 # OpenAI API setup
-client = openai.Client(api_key=OPENAI_API_KEY)  # Corrected API Client setup
+client = openai.Client(api_key=OPENAI_API_KEY)
+
+PATREON_HELP_CENTER_URL = "https://support.patreon.com/hc/en-us"
 
 @app.route("/", methods=["GET"])
 def home():
     return "Patreon Chatbot API is running!"
+
+def fetch_relevant_link(query):
+    """Search Patreon Help Center for relevant links."""
+    search_url = f"{PATREON_HELP_CENTER_URL}/search.json?query={query}"
+    
+    try:
+        response = requests.get(search_url)
+        response.raise_for_status()
+        results = response.json().get("results", [])
+        
+        if results:
+            first_result = results[0]  # Get the most relevant result
+            return f"For more details, visit: {PATREON_HELP_CENTER_URL}{first_result['url']}"
+    
+    except requests.RequestException as e:
+        print(f"Error fetching Help Center link: {e}")
+    
+    return ""
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -43,7 +64,14 @@ def chat():
             model="gpt-4o",
             messages=messages
         )
-        return jsonify({"reply": response.choices[0].message.content})
+        bot_reply = response.choices[0].message.content
+        
+        # Fetch relevant Patreon Help Center link
+        link = fetch_relevant_link(user_message)
+        if link:
+            bot_reply += f"\n\n🔗 {link}"
+        
+        return jsonify({"reply": bot_reply})
     
     except Exception as e:
         print(f"Error: {str(e)}")  # Logs error in Render
