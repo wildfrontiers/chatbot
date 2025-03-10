@@ -30,8 +30,9 @@ async function sendMessage() {
         // Remove "Chatbot is thinking..."
         document.getElementById("thinking").remove();
 
-        // Convert Markdown to properly formatted HTML using marked.js
-        const formattedReply = marked.parse(data.reply);
+        // Convert Markdown using Showdown.js
+        const converter = new showdown.Converter();
+        const formattedReply = converter.makeHtml(data.reply);
 
         chatbox.innerHTML += `<p class="bot-message">Chatbot: ${formattedReply}</p>`;
 
