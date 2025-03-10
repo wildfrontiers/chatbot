@@ -4,13 +4,17 @@ async function sendMessage() {
     if (!userMessage) return;
 
     const chatbox = document.getElementById("chatbox");
-    
+
     // Display user message
     chatbox.innerHTML += `<p class="user-message">You: ${userMessage}</p>`;
-    
+
     // Show "Chatbot is thinking..."
-    chatbox.innerHTML += `<p class="bot-message" id="thinking">Chatbot is thinking...</p>`;
-    
+    const thinkingMessage = document.createElement("p");
+    thinkingMessage.classList.add("bot-message");
+    thinkingMessage.id = "thinking";
+    thinkingMessage.innerHTML = "<em>Chatbot is thinking...</em>";
+    chatbox.appendChild(thinkingMessage);
+
     chatbox.scrollTop = chatbox.scrollHeight;
     userInput.value = ""; // Clear input field
 
@@ -25,9 +29,9 @@ async function sendMessage() {
 
         // Remove "Chatbot is thinking..."
         document.getElementById("thinking").remove();
-        
-        // Convert Markdown links to clickable links
-        const formattedReply = data.reply.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+        // Convert Markdown to properly formatted HTML using marked.js
+        const formattedReply = marked.parse(data.reply);
 
         chatbox.innerHTML += `<p class="bot-message">Chatbot: ${formattedReply}</p>`;
 
@@ -42,6 +46,7 @@ async function sendMessage() {
 // Allow pressing "Enter" to send messages
 document.getElementById("userInput").addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
+        event.preventDefault();
         sendMessage();
     }
 });
