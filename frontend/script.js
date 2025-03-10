@@ -6,12 +6,14 @@ async function sendMessage() {
     const chatbox = document.getElementById("chatbox");
 
     // Display user message
-    chatbox.innerHTML += `<p class="user-message">You: ${userMessage}</p>`;
+    const userMessageElement = document.createElement("div");
+    userMessageElement.classList.add("user-message");
+    userMessageElement.innerText = `You: ${userMessage}`;
+    chatbox.appendChild(userMessageElement);
 
     // Show "Chatbot is thinking..."
-    const thinkingMessage = document.createElement("p");
-    thinkingMessage.classList.add("bot-message");
-    thinkingMessage.id = "thinking";
+    const thinkingMessage = document.createElement("div");
+    thinkingMessage.classList.add("bot-message", "thinking");
     thinkingMessage.innerHTML = "<em>Chatbot is thinking...</em>";
     chatbox.appendChild(thinkingMessage);
 
@@ -28,17 +30,24 @@ async function sendMessage() {
         const data = await response.json();
 
         // Remove "Chatbot is thinking..."
-        document.getElementById("thinking").remove();
+        thinkingMessage.remove();
 
-        // Convert Markdown using Showdown.js
-        const converter = new showdown.Converter();
+        // Convert Markdown using Showdown.js (ensures correct numbered lists)
+        const converter = new showdown.Converter({ tables: true, ghCompatibleHeaderId: true });
         const formattedReply = converter.makeHtml(data.reply);
 
-        chatbox.innerHTML += `<p class="bot-message">Chatbot: ${formattedReply}</p>`;
+        // Ensure response is inside chat bubble
+        const botMessageElement = document.createElement("div");
+        botMessageElement.classList.add("bot-message");
+        botMessageElement.innerHTML = `Chatbot: ${formattedReply}`;
+        chatbox.appendChild(botMessageElement);
 
     } catch (error) {
-        document.getElementById("thinking").remove();
-        chatbox.innerHTML += `<p class="bot-message error">Error: Couldn't reach chatbot.</p>`;
+        thinkingMessage.remove();
+        const errorMessage = document.createElement("div");
+        errorMessage.classList.add("bot-message", "error");
+        errorMessage.innerText = "Error: Couldn't reach chatbot.";
+        chatbox.appendChild(errorMessage);
     }
 
     chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll to latest message
